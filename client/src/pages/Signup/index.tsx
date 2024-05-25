@@ -1,7 +1,12 @@
-import React from 'react'
+import SignUpFrom from "@/components/Auth/SignUp/SignUpFrom";
+
+
 
 export default function SignUpPage() {
   return (
-    <div>SignupPage</div>
+    <div className="h-screen w-screen dark:bg-dark_bg_1 flex justify-center items-center">
+
+      <SignUpFrom/>
+    </div>
   )
 }
