@@ -5,7 +5,7 @@ import mongoSanitize from "express-mongo-sanitize";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import { Request, Response, NextFunction } from "express";
-
+import cookieParser  from "cookie-parser";
 dotenv.config();
 import "./utils/DB/db";
 import createHttpError from "http-errors";
@@ -23,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // sanitizer request data
 app.use(mongoSanitize());
+//body parser
+app.use(cookieParser());
 // file upload
 app.use(
   fileUpload({
@@ -35,10 +37,7 @@ app.use(
     origin: "http://localhost:8080",
   })
 );
-app.post("/test", (req, res) => {
-  console.log("first");
-  res.send("Abhiik");
-});
+
 // use Routes
 app.use("/api/v1", router);
 //define server PORT
