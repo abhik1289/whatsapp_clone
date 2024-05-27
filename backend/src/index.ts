@@ -7,16 +7,16 @@ import cors from "cors";
 import { Request, Response, NextFunction } from "express";
 
 dotenv.config();
-import "./utils/db";
+import "./utils/DB/db";
 import createHttpError from "http-errors";
 import router from "./routes";
 let PORT = process.env.PORT;
 // create express app
 const app = express();
 //morgan
-// if (process.env.NODE_ENV !== "production") {
-//   app.use(morgan("dev"));
-// }
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("dev"));
+}
 // parser json request url
 app.use(express.json());
 // parser json response body
@@ -29,26 +29,27 @@ app.use(
     useTempFiles: true,
   })
 );
-//cors
-// app.use(
-//   cors({
-//     origin: "http://localhost:8080",
-//   })
-// );
-app.post("/test",(req,res)=>{
-    console.log("first")
-    res.send("Abhiik")
-})
-// use Routes 
-app.use("/api/v1",router);
+cors;
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+  })
+);
+app.post("/test", (req, res) => {
+  console.log("first");
+  res.send("Abhiik");
+});
+// use Routes
+app.use("/api/v1", router);
 //define server PORT
-let server = app.listen(5000, () => {
+let server;
+server = app.listen(PORT, () => {
   console.log("Server listening on port", PORT);
 });
 app.use(async (req: Request, res: Response, next: NextFunction) => {
   next(createHttpError.NotFound("This route does not exist"));
 });
-// handle http errors
+// // handle http errors
 app.use(async (err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500);
   res.send({
