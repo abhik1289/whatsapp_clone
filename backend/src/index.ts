@@ -5,11 +5,12 @@ import mongoSanitize from "express-mongo-sanitize";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 import { Request, Response, NextFunction } from "express";
-import cookieParser  from "cookie-parser";
+import cookieParser from "cookie-parser";
 dotenv.config();
 import "./utils/DB/db";
 import createHttpError from "http-errors";
 import router from "./routes";
+import authMiddleware, { AuthenticatedRequest } from "./middleware/authMiddleware";
 let PORT = process.env.PORT;
 // create express app
 const app = express();
@@ -37,7 +38,10 @@ app.use(
     origin: "http://localhost:8080",
   })
 );
-
+app.post("/testUser", authMiddleware, (req:AuthenticatedRequest, res) => {
+  // console.log(req);
+  console.log(req.user);
+});
 // use Routes
 app.use("/api/v1", router);
 //define server PORT
@@ -48,6 +52,7 @@ server = app.listen(PORT, () => {
 app.use(async (req: Request, res: Response, next: NextFunction) => {
   next(createHttpError.NotFound("This route does not exist"));
 });
+
 // // handle http errors
 app.use(async (err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500);

@@ -1,3 +1,3 @@
 import userModel from "../model/userModel";
-
-export { userModel };
+import ConversationModel from "./conversationModel";
+export { userModel, ConversationModel };
