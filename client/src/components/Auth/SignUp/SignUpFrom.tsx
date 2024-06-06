@@ -1,33 +1,25 @@
-import { Form } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import Heading from "../Heading/Heading";
-import { Formik } from "formik";
 import AuthInput from "../Input/AuthInput";
+import { useState } from "react";
+import MultiStepForm from "../MultiStepForm";
+
 export default function SignUpFrom() {
-  let regesterFormValues = {};
+  const [step, setStep] = useState<number>(1);
+  const validationSchema = Yup.object({
+    firstName: Yup.string()
+      .max(15, "Must be 15 characters or less")
+      .required("Required"),
+    lastName: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    email: Yup.string().email("Invalid email address").required("Required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Required"),
+  });
   return (
-    <div className="w-[390px] space-y-4 dark:bg-dark_bg_2 rounded-xl p-5">
-      <Heading
-        title="Regester Now"
-        text="  Connect, Share, and Engage: Your Platform for Meaningful Conversations"
-      />
-      <Formik
-        initialValues={{firstName:''}}
-        onSubmit={(values, actions) => {
-          console.log({ values, actions });
-          // alert(JSON.stringify(values, null, 2));
-          // actions.setSubmitting(false);
-        }}
-      >
-        <Form>
-          <AuthInput
-            name="firstName"
-            placeholder="Write your first name"
-            control="input"
-            title="First Name"
-            type="text"
-          />
-        </Form>
-      </Formik>
-    </div>
+     <MultiStepForm step={step} setStep={setStep} />
   );
 }
